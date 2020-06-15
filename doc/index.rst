@@ -7,3 +7,5 @@ Spot ROS User Documentation
 
     robot_setup
     ros_setup
+    driver_configuration
+    ros_usage
