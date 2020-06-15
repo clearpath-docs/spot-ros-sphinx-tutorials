@@ -27,4 +27,4 @@ The default configuration file is located at ``spot_driver/config/spot_ros.yaml`
 
 .. warning::
 
-  Having the robot power its motors and stand after the driver connects is a physical action and has inherent danger.  Make sure to use these settings with cuation and ensure the are is clear before starting the driver
+  Having the robot power its motors and stand after the driver connects is a physical action and has inherent danger.  Make sure to use these settings with cuation and ensure the area is clear before starting the driver
