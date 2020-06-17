@@ -20,6 +20,8 @@ The default configuration file is located at ``spot_driver/config/spot_ros.yaml`
 +------------------------+---------------------------------------------------------------------------------+
 | rates/rear_image       | The rate in Hz to obtain the image and depth image from the rear camera         |
 +------------------------+---------------------------------------------------------------------------------+
+| auto_claim             | A boolean to automatically claim the body and e stop when the driver connects   |
++------------------------+---------------------------------------------------------------------------------+
 | auto_power_on          | A boolean to automatically power on the robot's motors when the driver connects |
 +------------------------+---------------------------------------------------------------------------------+
 | auto_stand             | A boolean to automatically stand the robot after the driver conneccts           |
