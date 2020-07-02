@@ -102,6 +102,37 @@ Once RVIZ is loaded, you should see something similar to this.
 
 .. image:: images/view_robot.png
 
+Taking Control of the Robot
+---------------------------
+
+To control Spot, you need to maintain control of the eStop and body lease, power on the drive motors, and command the robot to stand.
+
+Body and eStop Control
+~~~~~~~~~~~~~~~~~~~~~~
+
+A body lease gives the holder the ability to command the spot to make actions in the world.  The eStop gives the robot a way to guarantee that the commanding system is maintaining contact with the robot.  There are two ways to claim a body lease and eStop using this driver.
+
+#. Automatically when the driver starts by enabling the ``auto_claim`` variable
+#. By calling the claim service after the driver is started
+
+You cannot claim a lease on the robot if something else already has a lease.  This is for security reasons.  Check the ``status/leases`` topic for information on current leases.
+
+Enable Motor Power
+~~~~~~~~~~~~~~~~~~
+
+Motor power needs to be enabled once you have a Lease on the body.  This can be done in two ways:
+
+#. Automatically when the driver starts by enabling the ``auto_power_on`` variable
+#. By calling the power_on service after the driver is started
+
+Stand the Robot Up
+~~~~~~~~~~~~~~~~~~
+
+Once the motors are powered, stand the robot up so it is able to move through the world.  This can be done in two ways:
+
+#. Automatically when the driver starts by enabling the ``auto_stand`` variable
+#. By calling the stand service after the driver is started
+
 Controling the Velocity
 -----------------------
 
@@ -178,6 +209,8 @@ Monitoring the Platform
 | status/behavior_faults | BehaviorFaultState         | A listing of behavior faults in the system              |
 +------------------------+----------------------------+---------------------------------------------------------+
 | status/system_faults   | SystemFaultState           | A listing of system faults in the system                |
++------------------------+----------------------------+---------------------------------------------------------+
+| status/feedback        | Feedback                   | Feedback from the Spot robot                            |
 +------------------------+----------------------------+---------------------------------------------------------+
 
 Troubleshooting
