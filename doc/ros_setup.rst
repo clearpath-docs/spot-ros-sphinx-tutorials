@@ -17,7 +17,7 @@ Setup the workspace so it knows about your ROS installation
 .. code:: bash
 
   cd ~/catkin_ws/src
-  source /opt/ros/kinetic/setup.bash
+  source /opt/ros/melodic/setup.bash
   catkin_init_workspace
 
 Clone the spot_ros repository into the workspace
@@ -45,4 +45,4 @@ Source your newly built workspace and the packages inside
 
 .. code:: bash
 
- 	source ~/catkin_ws/devel/setup.bash
+  source ~/catkin_ws/devel/setup.bash
