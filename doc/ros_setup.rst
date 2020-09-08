@@ -25,14 +25,14 @@ Clone the spot_ros repository into the workspace
 .. code:: bash
 
   cd ~/catkin_ws/src
-  git clone https://github.com/dniewinski/spot_ros.git
+  git clone https://github.com/clearpathrobotics/spot_ros.git
 
 Use rosdep to install of the necessary dependencies
 
 .. code:: bash
 
   cd ~/catkin_ws/
-  rosdep install --from-paths src --ignore-src --rosdistro kinetic -y
+  rosdep install --from-paths src --ignore-src -y
 
 Once all the necessary packages are installed, build the packages in the workspace
 
