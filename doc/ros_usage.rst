@@ -14,11 +14,6 @@ This will load RVIZ with the robot description visible.  It should also show any
 
 .. image:: images/view_model.png
 
-Get an Applicaiton Token
-------------------------
-
-You will need to get an application token to have API access on the robot.  To get an application token, email support@bostondynamics.com with subject "Application Token Request."
-
 Configure Your Networking
 -------------------------
 
@@ -81,8 +76,6 @@ When launching, there are some options you may need to configure for your setup.
 | username  | dummyusername                             | The username of the Spot user to authenticate using |
 +-----------+-------------------------------------------+-----------------------------------------------------+
 | password  | dummypassword                             | The password of the Spot user to authenticate using |
-+-----------+-------------------------------------------+-----------------------------------------------------+
-| app_token | /home/administrator/.bosdyn/dev.app_token | The file path to the Application Token from BD      |
 +-----------+-------------------------------------------+-----------------------------------------------------+
 | hostname  | 192.168.131.3                             | The IP address of the Spot robot                    |
 +-----------+-------------------------------------------+-----------------------------------------------------+
