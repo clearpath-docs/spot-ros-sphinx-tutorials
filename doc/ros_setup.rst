@@ -3,7 +3,17 @@ Spot ROS Diver Setup
 
 The ROS driver was created and tested on Kinetic, but it should work with Melodic as well.
 
-Building the driver from source
+Installing Dependencies
+-----------------------
+
+.. code:: bash
+
+  sudo apt update
+  sudo apt install -y python3-pip
+  pip3 install cython
+  pip3 install bosdyn-client bosdyn-mission bosdyn-api bosdyn-core
+
+Building the Driver from Source
 -------------------------------
 
 As the driver hasn't been released yet, it must be built from source.  This requires a source workspace on the ROS PC.
