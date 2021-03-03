@@ -44,20 +44,6 @@ Change your PC's IP address
 
 If you are able to, you can set your computer’s IPaddress is in the range of 10.0.0.*, 10.0.0.100 for example.  The robot will be available on 10.0.0.3.
 
-Change Spot's IP Address
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-Some robot or networking configurations do not have changing the ROS IP ranges as options.  In these cases, you will need to change the static IP for the robot.  To change the static ethernet address, :ref:`Spot Login`, then navigate to Network Setup.  Under the Ethernet tab, set a static IP address that is in the same range as your robot.
-
-.. note::
-
-  Spot has some reserved IP ranges.  It is best to avoid these ranges unless you are resetting IPs to their defaults.
-  * 10.0.0.*
-  * 192.168.50.*
-  * 192.168.80.*
-
-.. image:: images/ethernet.png
-
 Setup Wi-Fi (Optional)
 ----------------------
 
