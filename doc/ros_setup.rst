@@ -1,6 +1,9 @@
 Spot ROS Computer Setup
 =======================
 
+.. note::
+    This driver has only been fully tested up to SDK version 2.0.1.  Any version after this may have unexpected behviour
+
 The ROS driver was created and tested on Kinetic and Melodic
 
 Setup Spot Core
