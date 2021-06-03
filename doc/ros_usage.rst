@@ -1,4 +1,4 @@
-Spot ROS Driver Usuage
+Spot ROS Driver Usage
 ======================
 
 Verify the URDF
@@ -8,7 +8,7 @@ To verify that the spot_viz and spot_description packages are sourced properly, 
 
 .. code:: bash
 
-  rosrun spot_viz view_model.launch
+  roslaunch spot_viz view_model.launch
 
 This will load RVIZ with the robot description visible.  It should also show any additions you may have added to the robot's URDF
 
