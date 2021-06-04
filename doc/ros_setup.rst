@@ -2,7 +2,7 @@ Spot ROS Computer Setup
 =======================
 
 .. note::
-    This driver has only been fully tested up to SDK version 2.0.1.  Any version after this may have unexpected behviour
+    This driver has been tested using the steps below with Spot SDK version 2.3.5.  Any version after this may have unexpected behviour.
 
 The ROS driver was created and tested on Kinetic and Melodic
 
