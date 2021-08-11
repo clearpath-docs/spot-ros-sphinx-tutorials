@@ -177,6 +177,57 @@ To control the body position through a terminal, send the following command:
 
 Note that the -r is not needed for this command.  This sets the position the body should be in until changed.
 
+
+Cameras and Depth Clouds
+------------------------
+
+Spot is equipped 5 RGB and depth-sensing cameras: 2 on the front, one on each side, and one in the rear.  All of these
+cameras publish at approximately 10Hz.  The cameras are grayscale.
+
+Note that the front cameras are mounted sideways, so they have a narrower horizontal FoV, but a larger vertical one.
+The camera data likewise rotated anticlockwise by 90 degrees.
+
+The ``frontleft`` camera and depth topics are from the camera physically located on the front-left of the robot.
+This camera is pointed to the robot's right, so the depth cloud will appear in front of the robot's right shoulder:
+
+.. image:: images/front-left-depth.png
+
+Similarly the ``frontright`` camera and depth topics are from the camera physically located on the front-right of the
+robot.  This camera points to the robot's left, so the depth cloud will appear in front of the robot's left shoulder:
+
+.. image:: images/front-right-depth.png
+
+The complete list of depth and camera topics is below:
+
++--------------------------------+----------------------------+-------------------------------------------------------+
+| Topic                          | Type                       | Comments                                              |
++================================+============================+=======================================================+
+| camera/frontleft/camera/image  | Image                      | Data from the front-left camera, which points to the  |
+|                                |                            | right. Image is rotated 90 degrees anticlockwise.     |
++--------------------------------+----------------------------+-------------------------------------------------------+
+| camera/frontright/camera/image | Image                      | Data from the front-right camera, which points to the |
+|                                |                            | left. Image is rotated 90 degrees anticlockwise.      |
++--------------------------------+----------------------------+-------------------------------------------------------+
+| camera/left/camera/image       | Image                      |                                                       |
++--------------------------------+----------------------------+-------------------------------------------------------+
+| camera/right/camera/image      | Image                      |                                                       |
++--------------------------------+----------------------------+-------------------------------------------------------+
+| camera/back/camera/image       | Image                      |                                                       |
++--------------------------------+----------------------------+-------------------------------------------------------+
+| depth/frontleft/camera/image   | Image                      | Data from the front-left camera, which points to the  |
+|                                |                            | right.                                                |
++--------------------------------+----------------------------+-------------------------------------------------------+
+| depth/frontright/camera/image  | Image                      | Data from the front-right camera, which points to the |
+|                                |                            | left.                                                 |
++--------------------------------+----------------------------+-------------------------------------------------------+
+| depth/left/camera/image        | Image                      |                                                       |
++--------------------------------+----------------------------+-------------------------------------------------------+
+| depth/right/camera/image       | Image                      |                                                       |
++--------------------------------+----------------------------+-------------------------------------------------------+
+| depth/back/camera/image        | Image                      |                                                       |
++--------------------------------+----------------------------+-------------------------------------------------------+
+
+
 Monitoring the Platform
 -----------------------
 
