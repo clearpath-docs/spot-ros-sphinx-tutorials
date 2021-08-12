@@ -30,7 +30,7 @@ The Gen3 Lite arm does not support configuring a custom IP address; it always op
 ethernet-over-USB via its MicroUSB port.
 
 First, identify the network device that the arm presents itself as by powering-on the arm and connecting the USB cable
-to the PC.  Run ``dmesg`` and check for output like the following::
+to the PC.  Run ``dmesg`` and check for output like the following:
 
 .. code-block::
 
