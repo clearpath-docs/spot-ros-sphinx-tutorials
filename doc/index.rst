@@ -9,3 +9,10 @@ Spot ROS User Documentation
     robot_setup
     driver_configuration
     ros_usage
+
+.. toctree::
+    :titlesonly:
+    :hidden:
+    :caption: Advanced Topics
+
+    manipulation
