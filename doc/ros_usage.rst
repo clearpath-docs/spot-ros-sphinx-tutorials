@@ -100,15 +100,27 @@ Taking Control of the Robot
 
 To control Spot, you need to maintain control of the eStop and body lease, power on the drive motors, and command the robot to stand.
 
+The easiest way to do this is through the rviz control panel included in ``view_robot.launch``. You can add the panel to an rviz configuration with Panels>Add new panel and selecting ``spot_viz/SpotControlPanel``.
+
+.. image:: images/rviz_panel.png
+
 Body and eStop Control
 ~~~~~~~~~~~~~~~~~~~~~~
 
 A body lease gives the holder the ability to command the spot to make actions in the world.  The eStop gives the robot a way to guarantee that the commanding system is maintaining contact with the robot.  There are two ways to claim a body lease and eStop using this driver.
 
 #. Automatically when the driver starts by enabling the ``auto_claim`` variable
-#. By calling the claim service after the driver is started
+#. By calling the ``/spot/claim`` service after the driver is started
 
 You cannot claim a lease on the robot if something else already has a lease.  This is for security reasons.  Check the ``status/leases`` topic for information on current leases.
+
+You can release the lease by calling the ``/spot/release`` service
+
+The hard estop is at ``/spot/estop/hard`` this will kill power to the motors and must be released before you can send any commands to the robot. To release the estop, call ``/spot/estop/release``. The robot will collapse.
+
+The gentle estop is at ``/spot/estop/gentle``. This only stops whatever the robot is doing and will not cause a collapse. This stop does not have to be released.
+
+You can perform all of the estops by using the rviz GUI as well.
 
 Enable Motor Power
 ~~~~~~~~~~~~~~~~~~
@@ -116,7 +128,7 @@ Enable Motor Power
 Motor power needs to be enabled once you have a Lease on the body.  This can be done in two ways:
 
 #. Automatically when the driver starts by enabling the ``auto_power_on`` variable
-#. By calling the power_on service after the driver is started
+#. By calling the ``/spot/power_on`` service after the driver is started
 
 Stand the Robot Up
 ~~~~~~~~~~~~~~~~~~
@@ -124,7 +136,7 @@ Stand the Robot Up
 Once the motors are powered, stand the robot up so it is able to move through the world.  This can be done in two ways:
 
 #. Automatically when the driver starts by enabling the ``auto_stand`` variable
-#. By calling the stand service after the driver is started
+#. By calling the ``/spot/stand`` service after the driver is started
 
 Controling the Velocity
 -----------------------
@@ -154,10 +166,13 @@ That command will have spot rotate on the spot at 0.3 radians/second.  Note the 
 Interactive Marker
 ~~~~~~~~~~~~~~~~~~
 
-Inside of RVIZ, grab the red arrow that is around Spot's body and pull it forward or backwards to have Spot walk.  If you rotate the blue circle around the body, Spot will turn on the spot.  This is a very simple, but inaccurate to move Spot
+Inside of RVIZ, grab the red arrow that is around Spot's body and pull it forward or backwards to have Spot walk.  If you rotate the blue circle around the body, Spot will turn on the spot.  This is a very simple way to move Spot
 
-Controling the Body
+Controlling the Body
 -------------------
+
+ROS Topic
+~~~~~~~~~
 
 The angle of the body relative to the feet is also controllable through a ROS topic, but there is no interactive marker yet.
 
@@ -175,8 +190,132 @@ To control the body position through a terminal, send the following command:
     z: 0.0
     w: 1.0"
 
+The x and y components of the position are ignored. The z component sets the body height. The body height value is based on displacement from the neutral position.
+
 Note that the -r is not needed for this command.  This sets the position the body should be in until changed.
 
+Actionserver
+~~~~~~~~~~~~
+
+The actionserver ``/spot/pose_body`` can be called to set the body pose.
+
+To test this, start an action client with
+
+.. code:: bash
+
+  rosrun actionlib_tools axclient.py /spot/pose_body
+
+You will see a window pop up, and you can specify the body pose with a Pose message, or by specifying roll, pitch and yaw, and a body height.
+
+If using a pose message, you can control the body height by setting the z component of position. The x and y components of position are ignored. If the pose message is non-zero, any roll/pitch/yaw specification will be ignored.
+
+If using the roll/pitch/yaw specification, enter values in degrees, and body height in metres. Body height is based on displacement from the neutral position.
+
+If you send an empty message, the body pose will be reset to neutral.
+
+Here is what the axclient window will look like:
+
+.. code:: yaml
+
+    body_pose:
+      position:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      orientation:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+    roll: 0
+    pitch: 0
+    yaw: 0
+    body_height: 0.0
+
+Rviz
+~~~~
+
+The spot control panel in rviz also provides a way of setting the body pose by providing roll, pitch and yaw.
+
+Moving to a pose
+----------------
+
+ROS Topic
+~~~~~~~~~
+
+The ``/spot/go_to_pose`` topic can be used to move the robot by specifying a pose.
+
+To test, you can send a pose to the topic as follows, to move the robot one metre forwards from its current location.
+
+.. code:: bash
+
+    rostopic pub /spot/go_to_pose geometry_msgs/PoseStamped "header:
+      seq: 0
+      stamp:
+        secs: 0
+        nsecs: 0
+      frame_id: 'body'
+    pose:
+      position:
+        x: 1
+        y: 0.0
+        z: 0.0
+      orientation:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 1"
+
+Actionserver
+~~~~~~~~~~~~
+
+The ``/spot/trajectory`` actionserver gives you a little more control than the ros topic, and will also give you information about success or failure.
+
+.. warning::
+
+  If there is an obstacle along the trajectory the robot is trying to move along, it may fail as the trajectory command is different to the command that is used by the controller. In this case, the actionserver will return success despite not actually reaching the requested pose. As of 2021/09/10 the boston dynamics API does not appear to provide feedback which we can use to return failure when this happens.
+
+In addition to the pose, you can specify ``duration``, which specifies how long the command can run before timing out.
+
+The ``precise_positioning`` can be used to request that the robot move more precisely to the specified pose. If set to false, the robot will move to "near" the specified pose. It's not clear what exactly defines being "near" to the pose, but you should not expect to reach the pose precisely. The robot will end up within ~0.5m of the pose, and not make much effort to align to the orientation.
+
+You can test the actionserver by using an action client
+
+.. code:: bash
+
+  rosrun actionlib_tools axclient /spot/trajectory
+
+And fill in the values as you like.
+
+Rviz
+~~~~
+
+You can connect the 2d nav goal tool to publish to the ``/spot/go_to_pose`` topic. The default rviz config provided with
+
+.. code:: bash
+
+  roslaunch spot_viz view_robot.launch
+
+Already has the tool configured, but you can also do this by right clicking the toolbar, selecting tool properties, then changing the nav goal topic to ``/spot/go_to_pose``.
+
+Setting velocity limits
+~~~~~~~~~~~~~~~~~~~~~~~
+
+You can set a velocity limit in m/s for the motion to poses using the ``/spot/velocity_limit`` service:
+
+.. code:: bash
+
+    rosservice call /spot/velocity_limit "velocity_limit:
+      linear:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      angular:
+        x: 0.0
+        y: 0.0
+        z: 0.0"
+
+Only the x and y components of linear velocity are considered, and the z component of angular.
 
 Cameras and Depth Clouds
 ------------------------
