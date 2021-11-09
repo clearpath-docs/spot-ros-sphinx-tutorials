@@ -2,7 +2,7 @@ Spot Platform Configuration
 ===========================
 
 .. note::
-    This driver has only been fully tested up to version 2.0.1.  Any version after this may have unexpected behviour
+    This driver has only been fully tested up to version 2.1.0.  Any version after this may have unexpected behviour
 
 .. _Spot Login:
 
