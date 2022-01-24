@@ -27,7 +27,7 @@ Installing Dependencies
 .. code:: bash
 
   sudo apt update
-  sudo apt install -y python3-pip
+  sudo apt install -y python3-pip bridge-utils
   pip3 install cython
   pip3 install bosdyn-client bosdyn-mission bosdyn-api bosdyn-core
   pip3 install empy
