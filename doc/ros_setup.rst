@@ -58,6 +58,12 @@ Replace the `/etc/network/interfaces` file with the one below
   # maintenance, ethernet radio support, etc.
   iface br0:1 inet dhcp
 
+.. note::
+
+    If you find that br0:0 is not coming up automatically on startup, you can add ``ifup br0:0`` to
+    /etc/rc.local.  If /etc/rc.local doesn't exist, create it and run ``sudo chmod +x /etc/rc.local`` to
+    make it executable.
+
 Building the Driver from Source
 -------------------------------
 
