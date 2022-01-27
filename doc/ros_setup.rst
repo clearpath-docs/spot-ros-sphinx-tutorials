@@ -9,7 +9,9 @@ The ROS driver was created and tested on Kinetic and Melodic
 Setup Spot Core
 ---------------
 
-If you have a Spot Core, download the latest `Melodic ISO <https://packages.clearpathrobotics.com/stable/images/latest/melodic-bionic/amd64/>`_, set it up with `BalenaEtcher <https://www.balena.io/etcher/>`_, and install it onto the Core
+If you have a Spot Core you can either use the latest `Melodic ISO <https://packages.clearpathrobotics.com/stable/images/latest/melodic-bionic/amd64/>`_,
+set it up with `BalenaEtcher <https://www.balena.io/etcher/>`_, and install it onto the Core, or you can use the official
+SpotCORE image from Boston Dynamics.
 
 If you are using a Jetson, follow the `Jetson Setup Instructions <https://docs.nvidia.com/sdk-manager/install-with-sdkm-jetson/index.html>`_
 
@@ -18,19 +20,50 @@ Once your backpack PC is setup, all steps below are to be followed on that PC
 Installing Dependencies
 -----------------------
 
+.. note::
+
+    If you are using Clearpath's Melodic ISO you can skip immediately to the last step, "installing the dependencies
+    for building the ROS driver for Spot" as the ISO will automatically add the ROS and Clearpath apt and rosdep
+    sources for you.
+
+If you are using the official SpotCORE image, you will need to add the ROS package sources:
+
 .. code:: bash
 
-  sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-  sudo apt update
-  sudo apt install ros-melodic-ros-base
+    sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+    sudo apt install curl # if you haven't already installed curl
+    curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+
+Then add Clearpath's package sources:
 
 .. code:: bash
 
-  sudo apt update
-  sudo apt install -y python3-pip bridge-utils
-  pip3 install cython
-  pip3 install bosdyn-client bosdyn-mission bosdyn-api bosdyn-core
-  pip3 install empy
+    sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+    sudo apt update
+
+Install the essential ROS packages:
+
+.. code:: bash
+
+    sudo apt install ros-melodic-ros-base python-rosdep
+
+Configure ``rosdep`` with both the official ROS and Clearpath sources:
+
+.. code:: bash
+
+    sudo rosdep init
+    sudo wget https://raw.githubusercontent.com/clearpathrobotics/public-rosdistro/master/rosdep/50-clearpath.list -O /etc/ros/rosdep/sources.list.d/50-clearpath.list
+    rosdep update
+
+Finally, install the additional dependencies needed to built the ROS driver for Spot:
+
+.. code:: bash
+
+    sudo apt update
+    sudo apt install -y python3-pip bridge-utils git
+    pip3 install cython
+    pip3 install bosdyn-client bosdyn-mission bosdyn-api bosdyn-core
+    pip3 install empy
 
 Setup Networking
 ----------------
