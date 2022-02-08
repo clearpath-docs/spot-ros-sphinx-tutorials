@@ -121,37 +121,37 @@ Create the file ``/etc/netplan/50-ethernet-bridge.yaml`` with the following cont
     # - 192.168.50.1/24 for communicating with the Spot base platform
     # - dhcp for wired external internet access
     network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    bridge_eth:
-      dhcp4: no
-      dhcp6: no
-      match:
-        name: eth*
-    bridge_eno:
-      dhcp4: no
-      dhcp6: no
-      match:
-        name: eno*
-    bridge_enp:
-      dhcp4: no
-      dhcp6: no
-      match:
-        name: enp*
-    bridge_enx:
-      dhcp4: no
-      dhcp6: no
-      match:
-        name: enx*
-  bridges:
-    br0:
-      dhcp4: yes
-      dhcp6: no
-      interfaces: [bridge_eth, bridge_eno, bridge_enp, bridge_enx]
-      addresses:
-        - 192.168.50.1/24
-        - 192.168.131.1/24
+      version: 2
+      renderer: networkd
+      ethernets:
+        bridge_eth:
+          dhcp4: no
+          dhcp6: no
+          match:
+            name: eth*
+        bridge_eno:
+          dhcp4: no
+          dhcp6: no
+          match:
+            name: eno*
+        bridge_enp:
+          dhcp4: no
+          dhcp6: no
+          match:
+            name: enp*
+        bridge_enx:
+          dhcp4: no
+          dhcp6: no
+          match:
+            name: enx*
+      bridges:
+        br0:
+          dhcp4: yes
+          dhcp6: no
+          interfaces: [bridge_eth, bridge_eno, bridge_enp, bridge_enx]
+          addresses:
+            - 192.168.50.1/24
+            - 192.168.131.1/24
 
 Run ``sudo netplan generate; sudo netplan apply`` or reboot the computer to apply the new network settings.  Run
 ``ip a`` and verify that ``br0`` has IP addresses on the 192.168.131.0/24 and 192.168.50.0/24 subnets.
