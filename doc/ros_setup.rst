@@ -65,8 +65,13 @@ Finally, install the additional dependencies needed to built the ROS driver for 
     pip3 install bosdyn-client bosdyn-mission bosdyn-api bosdyn-core
     pip3 install empy
 
-Setup Networking
-----------------
+Setup Networking with ``ifupdown``
+------------------------------------
+
+.. note::
+
+    If your computer uses Netplan, please scroll down for instructions on configuring the network using
+    ``netplan.io``
 
 Replace the `/etc/network/interfaces` file with the one below
 
@@ -96,6 +101,61 @@ Replace the `/etc/network/interfaces` file with the one below
     If you find that br0:0 is not coming up automatically on startup, you can add ``ifup br0:0`` to
     /etc/rc.local.  If /etc/rc.local doesn't exist, create it and run ``sudo chmod +x /etc/rc.local`` to
     make it executable.
+
+
+Setup Networking with ``netplan.io``
+------------------------------------
+
+.. note::
+
+    If your computer uses the older ``/etc/network/interfaces`` file and the ``ifupdown`` package to manage
+    network interfaces, please scroll up for instructions on configuring the network
+
+Remove any wired network configuration files from ``/etc/netplan``.  Wireless configuration files may be retained.
+Create the file ``/etc/netplan/50-ethernet-bridge.yaml`` with the following contents:
+
+.. code-block:: yaml
+
+    # Bridge together all physical ethernet ports and allow them to operate simultaneously on:
+    # - 192.168.131.1/24 for ROS
+    # - 192.168.50.1/24 for communicating with the Spot base platform
+    # - dhcp for wired external internet access
+    network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    bridge_eth:
+      dhcp4: no
+      dhcp6: no
+      match:
+        name: eth*
+    bridge_eno:
+      dhcp4: no
+      dhcp6: no
+      match:
+        name: eno*
+    bridge_enp:
+      dhcp4: no
+      dhcp6: no
+      match:
+        name: enp*
+    bridge_enx:
+      dhcp4: no
+      dhcp6: no
+      match:
+        name: enx*
+  bridges:
+    br0:
+      dhcp4: yes
+      dhcp6: no
+      interfaces: [bridge_eth, bridge_eno, bridge_enp, bridge_enx]
+      addresses:
+        - 192.168.50.1/24
+        - 192.168.131.1/24
+
+Run ``sudo netplan generate; sudo netplan apply`` or reboot the computer to apply the new network settings.  Run
+``ip a`` and verify that ``br0`` has IP addresses on the 192.168.131.0/24 and 192.168.50.0/24 subnets.
+
 
 Building the Driver from Source
 -------------------------------
